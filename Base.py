@@ -1,4 +1,5 @@
 # Se importan todos los módulos desde la subcarpeta "Módulos"
+import os
 from Módulos import Datos
 from Módulos import Validaciones
 from Módulos import Búsquedas
@@ -22,8 +23,10 @@ def mostrar_menu():
     return input("Seleccione una opción: ").strip()
 
 def main():
-    # Se define la ruta de nuestro archivo base
-    ruta_archivo = "Paises.csv"
+    # Se obtiene la ruta exacta de la carpeta donde está guardado Base.py
+    directorio_actual = os.path.dirname(os.path.abspath(__file__))
+    # Se une esa ruta con el nombre del archivo
+    ruta_archivo = os.path.join(directorio_actual, "Paises.csv")
     
     # Se cargan los datos al iniciar el programa
     print("Iniciando sistema...")

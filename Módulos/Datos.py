@@ -1,23 +1,25 @@
 import csv
+from . import Validaciones
 
 def cargar_csv(ruta_archivo):
     """
-    Lee un archivo CSV y retorna una lista de diccionarios
-    Maneja excepciones si el archivo no existe o si hay errores de formato numérico
+    Lee un archivo CSV y retorna una lista de diccionarios.
+    Maneja excepciones si el archivo no existe o si hay errores de formato numérico.
     """
     lista_paises = []
     
     try:
-        # Se abre el archivo en modo lectura ('r')
-        with open(ruta_archivo, mode='r', encoding='utf-8') as archivo:
-            lector = csv.DictReader(archivo)
+        # utf-8-sig limpia cualquier caracter oculto que deje Excel al inicio
+        with open(ruta_archivo, mode='r', encoding='utf-8-sig') as archivo:
+            # Declaramos explícitamente el punto y coma como separador
+            lector = csv.DictReader(archivo, delimiter=';')
             
-            # Se limpian los nombres de las columnas por si hay espacios accidentales en el CSV
-            lector.fieldnames = [campo.strip() for campo in lector.fieldnames]
+            # Se limpian los nombres de los encabezados (minúsculas y sin espacios)
+            if lector.fieldnames:
+                lector.fieldnames = [campo.strip().lower() for campo in lector.fieldnames]
             
             for fila in lector:
                 try:
-                    # Se crea el diccionario asegurando la conversión de tipos
                     pais = {
                         "nombre": fila["nombre"].strip(),
                         "poblacion": int(fila["poblacion"].strip()),
@@ -27,21 +29,21 @@ def cargar_csv(ruta_archivo):
                     lista_paises.append(pais)
                     
                 except ValueError:
-                    # Se captura el error si no se puede convertir a entero (int)
                     nombre_error = fila.get("nombre", "Desconocido").strip()
-                    print(f"Error de formato en los datos del país: {nombre_error}. Se omitirá este registro.")
+                    print(f"Error de formato numérico en: {nombre_error}. Se omitirá este registro.")
+                except KeyError:
+                    # Se ignoran silenciosamente filas que estén completamente vacías o rotas
+                    pass
                     
         print(f"Se cargaron {len(lista_paises)} países correctamente.")
         
     except FileNotFoundError:
-        # Captura el error si el archivo CSV no se encuentra en la ruta indicada
-        print(f"Error: No se encontró el archivo '{ruta_archivo}'. Iniciando con una base de datos vacía.")
-        
+        print(f"Error: No se encontró el archivo '{ruta_archivo}'. Iniciando con base vacía.")
     except Exception as e:
-        # Captura cualquier otro error inesperado
         print(f"Ocurrió un error inesperado al leer el archivo: {e}")
         
     return lista_paises
+
 
 
 def guardar_csv(ruta_archivo, lista_paises):
@@ -66,7 +68,7 @@ def guardar_csv(ruta_archivo, lista_paises):
         print(f"Error al intentar guardar los datos: {e}")
 
 
-import Validaciones
+from . import Validaciones
 
 def agregar_pais(lista_paises):
     """

@@ -64,3 +64,66 @@ def guardar_csv(ruta_archivo, lista_paises):
         
     except Exception as e:
         print(f"Error al intentar guardar los datos: {e}")
+
+
+import Validaciones
+
+def agregar_pais(lista_paises):
+    """
+    Permite al usuario ingresar un nuevo país y lo agrega a la lista
+    Utiliza el módulo Validaciones para asegurar que no haya campos vacíos ni tipos incorrectos
+    """
+    print("\n--- Agregar Nuevo País ---")
+    
+    nombre = Validaciones.pedir_cadena("Ingrese el nombre del país: ")
+    
+    # Se valida que el país no exista previamente para evitar duplicados
+    for pais in lista_paises:
+        if pais["nombre"].lower() == nombre.lower():
+            print("Error: El país ya existe en la base de datos.")
+            return
+
+    poblacion = Validaciones.pedir_entero("Ingrese la población: ")
+    superficie = Validaciones.pedir_entero("Ingrese la superficie en km2: ")
+    continente = Validaciones.pedir_cadena("Ingrese el continente: ")
+    
+    nuevo_pais = {
+        "nombre": nombre,
+        "poblacion": poblacion,
+        "superficie": superficie,
+        "continente": continente
+    }
+    
+    lista_paises.append(nuevo_pais)
+    print(f"Éxito: {nombre} ha sido agregado correctamente a la lista temporal.")
+
+
+def actualizar_pais(lista_paises):
+    """
+    Busca un país por nombre exacto y permite modificar su población y superficie
+    """
+    print("\n--- Actualizar Datos de un País ---")
+    
+    nombre_buscado = Validaciones.pedir_cadena("Ingrese el nombre exacto del país a actualizar: ")
+    pais_encontrado = None
+    
+    # Se busca el país exacto
+    for pais in lista_paises:
+        if pais["nombre"].lower() == nombre_buscado.lower():
+            pais_encontrado = pais
+            break
+            
+    if pais_encontrado:
+        print(f"País encontrado: {pais_encontrado['nombre']}")
+        
+        # Se piden los nuevos datos mostrando los actuales como referencia
+        nueva_poblacion = Validaciones.pedir_entero(f"Ingrese la nueva población (Actual: {pais_encontrado['poblacion']}): ")
+        nueva_superficie = Validaciones.pedir_entero(f"Ingrese la nueva superficie en km2 (Actual: {pais_encontrado['superficie']}): ")
+        
+        # Se actualizan los valores en el diccionario
+        pais_encontrado["poblacion"] = nueva_poblacion
+        pais_encontrado["superficie"] = nueva_superficie
+        
+        print("Éxito: Los datos del país han sido actualizados correctamente.")
+    else:
+        print("Error: No se encontró un país con ese nombre en la base de datos.")

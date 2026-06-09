@@ -1,4 +1,5 @@
 # Se importan todos los módulos desde la subcarpeta "Módulos"
+# Cada uno se encarga de una parte del sistema (datos, validaciones, búsquedas, filtros, etc.)
 import os
 from Módulos import Datos
 from Módulos import Validaciones
@@ -29,6 +30,7 @@ def main():
     ruta_archivo = os.path.join(directorio_actual, "Paises.csv")
     
     # Se cargan los datos al iniciar el programa
+    # Mensaje de inicio del sistema
     print("Iniciando sistema...")
     lista_paises = Datos.cargar_csv(ruta_archivo)
     
@@ -36,17 +38,21 @@ def main():
         opcion = mostrar_menu()
         
         if opcion == '1':
+            # Agrega un nuevo país al sistema
             Datos.agregar_pais(lista_paises)
             
         elif opcion == '2':
+             # Actualiza población y superficie de un país existente
             Datos.actualizar_pais(lista_paises)
             
         elif opcion == '3':
+             # Busca un país por nombre
             nombre = Validaciones.pedir_cadena("Ingrese el nombre a buscar: ")
             resultados = Búsquedas.buscar_por_nombre(lista_paises, nombre)
             Búsquedas.mostrar_resultados(resultados)
             
         elif opcion == '4':
+             # Filtra países según distintos criterios
             print("\n--- Submenú de Filtros ---")
             print("a. Por Continente")
             print("b. Por rango de Población")
@@ -71,6 +77,7 @@ def main():
                 print("Opción inválida.")
                 
         elif opcion == '5':
+            # Ordena la lista de países según criterio elegido
             print("\n--- Submenú de Ordenamiento ---")
             print("a. Por Nombre")
             print("b. Por Población")
@@ -93,6 +100,7 @@ def main():
             Búsquedas.mostrar_resultados(lista_paises[:10])
             
         elif opcion == '6':
+            # Muestra estadísticas del sistema
             print("\n--- Estadísticas del Sistema ---")
             mayor, menor = Estadísticas.obtener_extremos_poblacion(lista_paises)
             if mayor and menor:
@@ -108,13 +116,15 @@ def main():
             for cont, cant in conteo.items():
                 print(f"- {cont}: {cant}")
                 
-        elif opcion == '7':
+        elif opcion == '7': 
+            # Guarda los datos en el CSV y finaliza el programa
             print("\nGuardando cambios en el archivo CSV...")
             Datos.guardar_csv(ruta_archivo, lista_paises)
             print("¡Gracias por utilizar el sistema! Hasta luego.")
             break
             
         else:
+             # Manejo de opción inválida del menú
             print("Opción no válida. Por favor, intente de nuevo.")
 
 # Punto de entrada de la aplicación

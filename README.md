@@ -66,5 +66,5 @@ El código fue diseñado siguiendo el principio de modularización, dividiendo l
 ---
 
 ## Enlaces Importantes
-* **Documentación (PDF):** [PEGAR LINK ACÁ]
-* **Video Demostrativo:** [PEGAR LINK ACÁ]
+* **Documentación (PDF):** https://github.com/gonzalolazartemanzotti-bim/UTN_TUPAD_Programacion1_TPI_Grupo35/blob/78eaeb6ac8c0793ee556a50f912f98989127b2f7/Informe.pdf
+* **Video Demostrativo:** https://youtu.be/KY1ehDQpXm4?si=tLFO6Xx8-EKCa0LI
